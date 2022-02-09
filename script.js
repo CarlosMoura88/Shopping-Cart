@@ -27,7 +27,7 @@ function createProductItemElement({ id, title, thumbnail }) {
 }
 
 function cartItemClickListener(event) { // listener para remover o produto do carrinho de compras;
-  // coloque seu código aqui
+  event.target.remove();
 }
 
 function createCartItemElement({ id, title, price }) { // cria o item no carrinho e deve ser filho da OL;
