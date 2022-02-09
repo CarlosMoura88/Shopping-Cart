@@ -70,6 +70,7 @@ const loadProducts = (async () => {
 
 const esvaziaCarrinho = () => {
   carrinho.innerHTML = '';
+  saveCartItems();
 };
 
 btnEsvaziaCarrinho.addEventListener('click', esvaziaCarrinho);
@@ -79,8 +80,6 @@ const esperaCarregar = async () => {
   const textoCarregando = document.querySelector('.loading');
   textoCarregando.remove();
 };
-
-loadProducts();
 
 esperaCarregar();
 
