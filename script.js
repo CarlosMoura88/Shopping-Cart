@@ -1,4 +1,6 @@
 const secItems = document.querySelector('.items');
+const btnEsvaziaCarrinho = document.querySelector('.empty-cart');
+const carrinho = document.querySelector('.cart__items');
 
 function createProductImageElement(imageSource) {
   const img = document.createElement('img');
@@ -41,8 +43,7 @@ function createCartItemElement({ id, title, price }) { // cria o item no carrinh
 
 async function getSkuFromProductItem(item) { // recupera o ID do produto
   const itemID = item.querySelector('span.item__sku').innerText;  
-  const result = await fetchItem(itemID);  
-  const carrinho = document.querySelector('.cart__items');
+  const result = await fetchItem(itemID);
   carrinho.appendChild(createCartItemElement(result));
 }
 
@@ -54,7 +55,8 @@ const insereNoCarrinho = async (event) => {
 
 const insereEvento = () => {
   getSavedCartItems();
-  const listaSalva = document.querySelectorAll('.cart__item');// inseri o listener porque ao carregar a página ele não era carregado junto ao HTML, sendo necessário reinserir
+  const listaSalva = document.querySelectorAll('.cart__item');
+  // inseri o listener porque ao carregar a página ele não era carregado junto ao HTML, sendo necessário reinserir
   listaSalva.forEach((element) => element.addEventListener('click', cartItemClickListener));
 };
 
@@ -65,6 +67,12 @@ const loadProducts = (async () => {
   botaoAdd.forEach((element) => element.addEventListener('click', insereNoCarrinho));
   insereEvento();
 });
+
+const esvaziaCarrinho = () => {
+  carrinho.innerHTML = '';
+};
+
+btnEsvaziaCarrinho.addEventListener('click', esvaziaCarrinho);
 
 window.onload = () => { 
   loadProducts();
