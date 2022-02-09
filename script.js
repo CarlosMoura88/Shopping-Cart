@@ -28,6 +28,7 @@ function createProductItemElement({ id, title, thumbnail }) {
 
 function cartItemClickListener(event) { // listener para remover o produto do carrinho de compras;
   event.target.remove();
+  saveCartItems();
 }
 
 function createCartItemElement({ id, title, price }) { // cria o item no carrinho e deve ser filho da OL;
@@ -48,6 +49,13 @@ async function getSkuFromProductItem(item) { // recupera o ID do produto
 const insereNoCarrinho = async (event) => {
   const itemID = event.target.parentNode;
   await getSkuFromProductItem(itemID);
+  saveCartItems();
+};
+
+const insereEvento = () => {
+  getSavedCartItems();
+  const listaSalva = document.querySelectorAll('.cart__item');// inseri o listener porque ao carregar a página ele não era carregado junto ao HTML, sendo necessário reinserir
+  listaSalva.forEach((element) => element.addEventListener('click', cartItemClickListener));
 };
 
 const loadProducts = (async () => { 
@@ -55,8 +63,9 @@ const loadProducts = (async () => {
   produtosEscolhidos.forEach((element) => secItems.appendChild(createProductItemElement(element)));
   const botaoAdd = document.querySelectorAll('button.item__add');
   botaoAdd.forEach((element) => element.addEventListener('click', insereNoCarrinho));
+  insereEvento();
 });
 
-loadProducts();
-
-window.onload = () => { };
+window.onload = () => { 
+  loadProducts();
+};
