@@ -28,8 +28,21 @@ function createProductItemElement({ id, title, thumbnail }) {
   return section;
 }
 
+const valorTotal = () => {  
+  const meusItens = document.querySelectorAll('li');
+  const subTotal = Array.from(meusItens).reduce((acc, item) => {
+    const texto = item.innerText;
+    const valor = texto.split('$')[1];
+    const valorEmNumero = Number(valor);
+    return acc + valorEmNumero;
+  }, 0); // final reduce
+  const valorFinal = document.getElementById('valor-total');
+  valorFinal.innerText = subTotal;
+};
+
 function cartItemClickListener(event) { // listener para remover o produto do carrinho de compras;
   event.target.remove();
+  valorTotal();
   saveCartItems();
 }
 
@@ -49,13 +62,14 @@ async function getSkuFromProductItem(item) { // recupera o ID do produto
 
 const insereNoCarrinho = async (event) => {
   const itemID = event.target.parentNode;
-  await getSkuFromProductItem(itemID);
+  await getSkuFromProductItem(itemID);  
+  valorTotal();
   saveCartItems();
 };
 
 const insereEvento = () => {
   getSavedCartItems();
-  const listaSalva = document.querySelectorAll('.cart__item');
+  const listaSalva = document.querySelectorAll('li.cart__item');
   // inseri o listener porque ao carregar a página ele não era carregado junto ao HTML, sendo necessário reinserir
   listaSalva.forEach((element) => element.addEventListener('click', cartItemClickListener));
 };
@@ -70,6 +84,7 @@ const loadProducts = (async () => {
 
 const esvaziaCarrinho = () => {
   carrinho.innerHTML = '';
+  valorTotal();
   saveCartItems();
 };
 
