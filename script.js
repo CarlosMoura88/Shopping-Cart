@@ -74,6 +74,14 @@ const esvaziaCarrinho = () => {
 
 btnEsvaziaCarrinho.addEventListener('click', esvaziaCarrinho);
 
-window.onload = () => { 
-  loadProducts();
+const esperaCarregar = async () => {
+  await loadProducts();
+  const textoCarregando = document.querySelector('.loading');
+  textoCarregando.remove();
 };
+
+loadProducts();
+
+esperaCarregar();
+
+window.onload = () => { };
