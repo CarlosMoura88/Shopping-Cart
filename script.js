@@ -26,27 +26,37 @@ function createProductItemElement({ id, title, thumbnail }) {
   return section;
 }
 
-const carregando = (async () => { 
-  const produtosEscolhidos = await fetchProducts('computador');
-  produtosEscolhidos.forEach((element) => secItems.appendChild(createProductItemElement(element)));
-});
-
-carregando();
-
-function getSkuFromProductItem(item) {
-  return item.querySelector('span.item__sku').innerText;
-}
-
-function cartItemClickListener(event) {
+function cartItemClickListener(event) { // listener para remover o produto do carrinho de compras;
   // coloque seu código aqui
 }
 
-function createCartItemElement({ sku, name, salePrice }) {
+function createCartItemElement({ id, title, price }) { // cria o item no carrinho e deve ser filho da OL;
   const li = document.createElement('li');
   li.className = 'cart__item';
-  li.innerText = `SKU: ${sku} | NAME: ${name} | PRICE: $${salePrice}`;
+  li.innerText = `SKU: ${id} | NAME: ${title} | PRICE: $${price}`;
   li.addEventListener('click', cartItemClickListener);
   return li;
 }
+
+async function getSkuFromProductItem(item) { // recupera o ID do produto
+  const itemID = item.querySelector('span.item__sku').innerText;  
+  const result = await fetchItem(itemID);  
+  const carrinho = document.querySelector('.cart__items');
+  carrinho.appendChild(createCartItemElement(result));
+}
+
+const insereNoCarrinho = async (event) => {
+  const itemID = event.target.parentNode;
+  await getSkuFromProductItem(itemID);
+};
+
+const loadProducts = (async () => { 
+  const produtosEscolhidos = await fetchProducts('computador');
+  produtosEscolhidos.forEach((element) => secItems.appendChild(createProductItemElement(element)));
+  const botaoAdd = document.querySelectorAll('button.item__add');
+  botaoAdd.forEach((element) => element.addEventListener('click', insereNoCarrinho));
+});
+
+loadProducts();
 
 window.onload = () => { };
