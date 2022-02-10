@@ -30,7 +30,8 @@ function createProductItemElement({ id, title, thumbnail }) {
 
 const valorTotal = () => {  
   const meusItens = document.querySelectorAll('li');
-  const subTotal = Array.from(meusItens).reduce((acc, item) => {
+  const subTotal = Array.from(meusItens).reduce((acc, item) => { 
+    // utilizei Array.from pois o reduce() não funciona diretamente com o nodelist;
     const texto = item.innerText;
     const valor = texto.split('$')[1];
     const valorEmNumero = Number(valor);
@@ -75,8 +76,8 @@ const insereEvento = () => {
 };
 
 const loadProducts = (async () => { 
-  const produtosEscolhidos = await fetchProducts('computador');
-  produtosEscolhidos.forEach((element) => secItems.appendChild(createProductItemElement(element)));
+  const { results } = await fetchProducts('computador');
+  results.forEach((element) => secItems.appendChild(createProductItemElement(element)));
   const botaoAdd = document.querySelectorAll('button.item__add');
   botaoAdd.forEach((element) => element.addEventListener('click', insereNoCarrinho));
   insereEvento();
