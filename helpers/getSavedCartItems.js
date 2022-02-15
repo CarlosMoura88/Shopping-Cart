@@ -1,8 +1,4 @@
-const getSavedCartItems = () => {
-  const minhaLista = document.querySelector('ol.cart__items');
-  const meuSave = localStorage.getItem('cartItems');  
-  minhaLista.innerHTML = meuSave;
-};
+const getSavedCartItems = () => localStorage.getItem('cartItems');
 
 if (typeof module !== 'undefined') {
   module.exports = getSavedCartItems;
